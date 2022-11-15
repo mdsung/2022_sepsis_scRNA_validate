@@ -1,12 +1,8 @@
 import math
+import sys
 
-import pandas as pd
 import scanpy as sc
 from matplotlib import pyplot as plt
-
-
-def load_metadata():
-    return pd.read_csv('data/processed/metadata.csv')
 
 
 def load_anndata(geo_number:str):
@@ -18,7 +14,7 @@ def load_anndata(geo_number:str):
     adata.var_names_make_unique() 
     return adata
 
-def process_anndata(adata, patient_id):
+def process_anndata(adata, geo_number):
     adata = _filter_min_genes_cells(adata)
     adata = _filter_by_QC(adata)
     adata = _normalize(adata)
@@ -36,7 +32,7 @@ def process_anndata(adata, patient_id):
             multi_panel=True,
             show = False
         )
-        plt.savefig(f'data/processed/qc_violin_{patient_id}.png')
+        plt.savefig(f'figures/qc/qc_violin_{geo_number}.png')
     
     return adata
 
@@ -79,13 +75,11 @@ def _pca(adata):
     return adata
 
 def main():
-    metadata = load_metadata()
-    metadata = metadata[metadata.group.isin(['Non-survivor', 'Survivor'])]
-
-    for _, (geo_number, Group, timepoint, group) in metadata.iterrows():
-        adata = load_anndata(geo_number)
-        adata = process_anndata(adata, Group)
-        adata.write(f'data/processed/{geo_number}-{timepoint}-{group}.h5ad')
-        
+    geo_number = sys.argv[1]
+    
+    adata = load_anndata(geo_number)
+    adata = process_anndata(adata, geo_number)
+    adata.write(f'data/processed/{geo_number}.h5ad')
+    
 if __name__ == "__main__":
     main()
