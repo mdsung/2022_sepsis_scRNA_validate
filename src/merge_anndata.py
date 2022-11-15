@@ -31,8 +31,8 @@ def load_anndata_from_h5ad(geo_number: str) -> AnnData:
     return anndata
 
 def main():
-    qc_table_path = Path(sys.argv[1]) if sys.argv[1] else Path("data/processed/qc_table.csv")
-    output_path = Path(sys.argv[2]) if sys.argv[2] else Path("data/processed/anndata/sepsis.h5ad")
+    qc_table_path = Path(sys.argv[1]) if sys.argv[1] is not None else Path("figures/qc/qc.csv")
+    output_path = Path(sys.argv[2]) if sys.argv[2] is not None else Path("data/processed/anndata/sepsis.h5ad")
     
     qc = load_qc_data(qc_table_path)
     geo_numbers = qc.geo.to_list()
@@ -57,12 +57,12 @@ def main():
     total_anndata = scale(total_anndata)
     total_anndata = pca(total_anndata)
     total_anndata = integrate_harmony(total_anndata)
-    total_anndata = compute_neighbors(total_anndata, n_neighbors = 10, n_pcs = 50)
-    total_anndata = compute_cluster(total_anndata, resolution = 0.5)
-    total_anndata = compute_umap(total_anndata)
-    
-    save_umap(total_anndata)
     save_anndata(total_anndata, output_path)
+    
+    # total_anndata = compute_neighbors(total_anndata, n_neighbors = 10, n_pcs = 50)
+    # total_anndata = compute_cluster(total_anndata, resolution = 0.5)
+    # total_anndata = compute_umap(total_anndata)
+    # save_umap(total_anndata)
 
 
 if __name__ == "__main__":

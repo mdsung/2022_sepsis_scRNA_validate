@@ -45,3 +45,19 @@ rule merge_anndata:
         "data/processed/anndata/sepsis.h5ad"
     shell:
         "python {input.script} {input.qc} {output}"
+
+rule draw_umap:
+    input:
+        "data/processed/anndata/sepsis.h5ad",
+        script="src/draw_umaps.py"
+    output:
+        "figures/umap/umap_{n_neighbors}_{n_pcs}_{resolution}.png"
+    shell:
+        "python {input.script} {wildcards.n_neighbors} {wildcards.n_pcs} {wildcards.resolution}"
+
+rule draw_umaps:
+    input: 
+        expand("figures/umap/umap_{n_neighbors}_{n_pcs}_{resolution}.png", 
+            n_neighbors=[5, 10, 15, 20],
+            n_pcs=[10, 20, 30, 40, 50],
+            resolution=[0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.5])

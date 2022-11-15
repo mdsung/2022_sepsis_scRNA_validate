@@ -111,11 +111,11 @@ def compute_umap(anndata: AnnData)->AnnData:
     sc.tl.umap(anndata)
     return anndata
 
-def save_umap(anndata: AnnData):
+def save_umap(anndata: AnnData, n_neighbors = 10, n_pcs=50, resolution:float = 0.5):
     Path("figures/umap").mkdir(parents=True, exist_ok=True)
-    leiden_umap = sc.pl.umap(anndata, color="batch", show=False)
+    leiden_umap = sc.pl.umap(anndata, color='leiden', show=False, title = f"n_neighbors = {n_neighbors}, n_pcs = {n_pcs}, resolution = {resolution}")
     fig = leiden_umap.get_figure()
-    fig.savefig("figures/umap/umap.png")
+    fig.savefig(f"figures/umap/umap_{n_neighbors}_{n_pcs}_{resolution}.png")
 
 def save_anndata(anndata: AnnData, save_path: Path):
     save_path.parent.mkdir(parents=True, exist_ok=True)
