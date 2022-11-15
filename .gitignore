@@ -1,3 +1,5 @@
 /.venv
 /data
+/cache
+/.snakemake
 cfg.txt
