@@ -3,3 +3,5 @@
 /cache
 /.snakemake
 cfg.txt
+**/__pycache__
+**/.ipynb_checkpoints

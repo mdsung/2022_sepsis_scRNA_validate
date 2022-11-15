@@ -1,4 +1,5 @@
 import re
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -32,8 +33,11 @@ def clear_metadata(metadata: pd.DataFrame) -> pd.DataFrame:
     return metadata
 
 
-def main():
-    metadata = read_metadata("data/raw/metadata.txt")
+def main(): 
+    metadata_path = Path(sys.argv[1])
+    if metadata_path is None:
+        metadata_path = Path("data/raw/metadata.txt")
+    metadata = read_metadata(metadata_path)
     metadata = clear_metadata(metadata)
     metadata.to_csv("data/processed/metadata.csv", index=False)
 
