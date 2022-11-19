@@ -8,16 +8,12 @@ import scanpy as sc
 from anndata import AnnData
 
 from src.util_anndata import (
-    compute_cluster,
-    compute_neighbors,
-    compute_umap,
     hvg,
     integrate_harmony,
     logarithmize,
     normalize,
     pca,
     save_anndata,
-    save_umap,
     scale,
 )
 from src.util_qc import (

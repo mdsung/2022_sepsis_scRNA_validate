@@ -232,7 +232,6 @@ def calculate_doublet(adata: AnnData):
 
 
 def filter_doublet(adata: AnnData):
-    adata = adata.raw.to_adata()
     adata = adata[adata.obs["doublet_info"] == "False", :]
     print(f"Remaining cells {adata.n_obs}")
     return adata
