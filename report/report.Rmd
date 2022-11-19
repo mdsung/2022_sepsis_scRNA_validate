@@ -1,0 +1,98 @@
+---
+title: "scRNA Sepsis Validation"
+author: "MinDong Sung.M.D"
+date: "2022-11-16"
+output:
+  pdf_document:
+    keep_tex: true
+    latex_engine: xelatex
+    fig_caption: yes
+fontsize: 12pt
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{caption}
+  - \usepackage{kotex}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+---
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(kableExtra)
+library(here)
+here::i_am("report/report.Rmd")
+```
+# Objective
+Validate Geneset found in the longitudinal sepsis cohort in other sepsis dataset
+
+# Dataset
+- Study: Dynamic changes in human single cell transcriptional signatures during fatal sepsis
+- GEO nubmer: GSE167363
+- Gram negative bacterial septic shock
+- Sample at sepsis diagnosis and 6 hours after sepsis diagnosis
+
+# Structure
+```{r}
+#| label: batch-structure
+#| message: false
+#| warning: false
+#| echo: false
+
+df <- read_csv(here("data/processed/metadata.csv"))
+df %>%
+  kable(booktabs = TRUE, linesep = "") %>%
+  kable_styling()
+```
+
+
+# Target Geneset
+- cluster 1 : decreased in timpoint 1
+- cluster 2 : increased in timepoint 1
+
+# Geneset expression heatmap (Total Cell Target)
+
+```{r}
+#| label: clsuter1-geneset-expression-heatmap
+#| echo: false
+#| message: false
+#| fig.align: 'center'
+#| fig.cap: 'Cluster 1, 2 geneset expression heatmap'
+#| out.width: '49%'
+#| fig.show: 'hold'
+
+knitr::include_graphics(here("figures/geneset/totalcell_cluster1_genes_selected.png"))
+knitr::include_graphics(here("figures/geneset/totalcell_cluster2_genes_selected.png"))
+```
+
+## Cluster 1
+- CD83
+  - MHC II stabilizer: 차단시 CD4+ T cell activateion, reduced IL12
+  - Mature dendritic ell
+- HL-DRB1
+- HL-DQB1
+- PMAIP1(Noxa)
+  - pro-apoptotic Bcl2 famility
+  - associtaed with p53 mediated apoptosis
+
+## Cluster 2
+
+- ARPC1B
+- LAMTOR1
+- MPP1
+- RUFY1
+- CMTM5
+- SNAP23
+- ITGA2B
+- MYH9
+
+# UMAP
+```{r}
+#| label: singlecell-all-umap
+#| echo: false
+#| message: false
+#| fig.align: 'center'
+#| fig.cap: DimPlot
+#| out.width: '100%'
+knitr::include_graphics(here("figures/umap/umap_40_50_0.9.png"))
+```

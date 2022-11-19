@@ -1,0 +1,227 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{kotex}
+\usepackage{float}
+\floatplacement{figure}{H}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={scRNA Sepsis Validation},
+  pdfauthor={MinDong Sung.M.D},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{scRNA Sepsis Validation}
+\author{MinDong Sung.M.D}
+\date{2022-11-16}
+
+\begin{document}
+\maketitle
+
+\hypertarget{objective}{%
+\section{Objective}\label{objective}}
+
+Validate Geneset found in the longitudinal sepsis cohort in other sepsis
+dataset
+
+\hypertarget{dataset}{%
+\section{Dataset}\label{dataset}}
+
+\begin{itemize}
+\tightlist
+\item
+  Study: Dynamic changes in human single cell transcriptional signatures
+  during fatal sepsis
+\item
+  GEO nubmer: GSE167363
+\item
+  Gram negative bacterial septic shock
+\item
+  Sample at sepsis diagnosis and 6 hours after sepsis diagnosis
+\end{itemize}
+
+\hypertarget{structure}{%
+\section{Structure}\label{structure}}
+
+\begin{tabular}{llrl}
+\toprule
+GEO & Group & timepoint & group\\
+\midrule
+GSM5102900 & HC1 & NA & Healthy\\
+GSM5102901 & HC2 & NA & Healthy\\
+GSM5102902 & NS LS T0 & 0 & Non-survivor\\
+GSM5102903 & NS LS T6 & 6 & Non-survivor\\
+GSM5102904 & S1 T0 & 0 & Survivor\\
+GSM5102905 & S1 T6 & 6 & Survivor\\
+GSM5511351 & NS ES\_T0 & 0 & Non-survivor\\
+GSM5511352 & NS ES\_T6 & 6 & Non-survivor\\
+GSM5511353 & S2\_T0 & 0 & Survivor\\
+GSM5511354 & S2\_T6 & 6 & Survivor\\
+GSM5511355 & S3\_T0 & 0 & Survivor\\
+GSM5511356 & S3\_T6 & 6 & Survivor\\
+\bottomrule
+\end{tabular}
+
+\hypertarget{target-geneset}{%
+\section{Target Geneset}\label{target-geneset}}
+
+\begin{itemize}
+\tightlist
+\item
+  cluster 1 : decreased in timpoint 1
+\item
+  cluster 2 : increased in timepoint 1
+\end{itemize}
+
+\hypertarget{geneset-expression-heatmap-total-cell-target}{%
+\section{Geneset expression heatmap (Total Cell
+Target)}\label{geneset-expression-heatmap-total-cell-target}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.49\linewidth]{../figures/geneset/totalcell_cluster1_genes_selected} \includegraphics[width=0.49\linewidth]{../figures/geneset/totalcell_cluster2_genes_selected} 
+
+}
+
+\caption{Cluster 1, 2 geneset expression heatmap}\label{fig:clsuter1-geneset-expression-heatmap}
+\end{figure}
+
+\hypertarget{cluster-1}{%
+\subsection{Cluster 1}\label{cluster-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  CD83
+
+  \begin{itemize}
+  \tightlist
+  \item
+    MHC II stabilizer: 차단시 CD4+ T cell activateion, reduced IL12
+  \item
+    Mature dendritic ell
+  \end{itemize}
+\item
+  HL-DRB1
+\item
+  HL-DQB1
+\item
+  PMAIP1(Noxa)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pro-apoptotic Bcl2 famility
+  \item
+    associtaed with p53 mediated apoptosis
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{cluster-2}{%
+\subsection{Cluster 2}\label{cluster-2}}
+
+\begin{itemize}
+\tightlist
+\item
+  ARPC1B
+\item
+  LAMTOR1
+\item
+  MPP1
+\item
+  RUFY1
+\item
+  CMTM5
+\item
+  SNAP23
+\item
+  ITGA2B
+\item
+  MYH9
+\end{itemize}
+
+\hypertarget{umap}{%
+\section{UMAP}\label{umap}}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{../figures/umap/umap_40_50_0.9} 
+
+}
+
+\caption{DimPlot}\label{fig:singlecell-all-umap}
+\end{figure}
+
+\end{document}
