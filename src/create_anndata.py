@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
 
+import anndata as ad
 import scanpy as sc
+from anndata import AnnData
 
 from src.util_anndata import (
     add_name,
@@ -21,23 +23,19 @@ def load_anndata_from_mtx(geo_number: str):
     adata.var_names_make_unique()
     return adata
 
-def process_anndata(adata, geo_number):
-    adata = add_name(adata, geo_number)
-    return adata
-
 def main():
-    geo_number = sys.argv[1]
-    output = sys.argv[2]
-    if output is None:
-        output = f"data/processed/anndata/{geo_number}.h5ad"
-    Path(output).parent.mkdir(parents=True, exist_ok=True)
+    geo_numbers = sys.argv[1:]
+    
+    adata_list = []
+    for geo_number in geo_numbers:
+        adata = load_anndata_from_mtx(geo_number)
+        adata = add_name(adata, geo_number)
+        adata_list.append(adata)
 
-    adata = load_anndata_from_mtx(geo_number)
-    adata = process_anndata(adata, geo_number)
-    adata = filter_min_genes_cells(adata)
-    adata = calculate_QC(adata)
-    draw_QC_plot(adata, geo_number)
-    save_anndata(adata, Path(f"data/processed/anndata/{geo_number}.h5ad"))
+    adata = ad.concat(adata_list)
+    output_path = Path(f"data/processed/anndata/merged.h5ad")
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    save_anndata(adata, output_path)
 
 if __name__ == "__main__":
     main()

@@ -12,6 +12,8 @@ numpy = "^1.23.4"
 pandas = "^1.5.1"
 harmonypy = "^0.0.6"
 pynndescent = "^0.5.8"
+pybiomart = "^0.2.0"
+scrublet = "^0.2.3"
 
 [tool.poetry.dev-dependencies]
 jupyter = "^1.0.0"

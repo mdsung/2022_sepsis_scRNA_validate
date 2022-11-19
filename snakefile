@@ -26,25 +26,24 @@ geo_numbers = get_geo_numbers()
 
 rule create_anndata:
     input: 
-        "data/raw/{geo_number}/barcodes.tsv.gz",
-        "data/raw/{geo_number}/features.tsv.gz",
-        "data/raw/{geo_number}/matrix.mtx.gz",
+        expand("data/raw/{geo_number}/barcodes.tsv.gz", geo_number = geo_numbers),
+        expand("data/raw/{geo_number}/features.tsv.gz", geo_number = geo_numbers),
+        expand("data/raw/{geo_number}/matrix.mtx.gz", geo_number = geo_numbers),
         script = "src/create_anndata.py",
     output:
-        "data/processed/anndata/{geo_number}.h5ad",
-        "figures/qc/{geo_number}.png"
+        "data/processed/anndata/merged.h5ad",
     shell:
-        "python {input.script} {wildcards.geo_number} {output[0]}"
+        "python {input.script} {geo_numbers}"
 
 rule merge_anndata:
     input:
-        expand("data/processed/anndata/{geo_number}.h5ad", geo_number=geo_numbers),
+        "data/processed/anndata/merged.h5ad",
         qc="figures/qc/qc.csv",
-        script="src/merge_anndata.py"
+        script="src/process_anndata.py"
     output:
-        "data/processed/anndata/sepsis.h5ad"
+        "data/processed/anndata/merged_processed.h5ad"
     shell:
-        "python {input.script} {input.qc} {output}"
+        "python {input.script} {input.qc} {input[0]} {output}"
 
 rule draw_umap:
     input:
@@ -58,6 +57,6 @@ rule draw_umap:
 rule draw_umaps:
     input: 
         expand("figures/umap/umap_{n_neighbors}_{n_pcs}_{resolution}.png", 
-            n_neighbors=[5, 10, 15, 20],
+            n_neighbors=[25, 30, 35, 40],
             n_pcs=[10, 20, 30, 40, 50],
             resolution=[0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.5])
